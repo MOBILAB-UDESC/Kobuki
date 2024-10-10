@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="https://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find kobuki_description)/model/sensors/lidar/kobuki_lidar.gazebo.xacro"/>
+
+    <xacro:macro name="kobuki_lidar" params="parent *joint_origin">
+        <joint name="lidar_joint" type="fixed">
+            <xacro:insert_block name="joint_origin"/>
+            <parent link="${parent}"/>
+            <child link="lidar_link"/>
+            <!-- <axis xyz="1 0 0"/> -->
+        </joint>
+        <link name="lidar_link">
+            <visual>
+                <origin xyz="-0.0475 0.035 0.02" rpy="${PI/2} 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(find kobuki_description)/meshes/stl/rplidar_a1.STL" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </visual>
+        
+            <collision>
+                <geometry>
+                    <mesh filename="file://$(find kobuki_description)/meshes/stl/rplidar_a1.STL" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <origin rpy="${PI/2} 0 0" xyz="-0.0475 0.035 -0.0225"/>
+            </collision>
+        
+            <inertial>
+                <origin xyz="0 0 0.017"/>
+                <mass value="0.2"/>
+                <inertia ixx="0.0000873" ixy="0" ixz="0" iyy="0.000005" iyz="0" izz="0.0000283" />
+            </inertial>
+        </link>
+    </xacro:macro>
+</robot>

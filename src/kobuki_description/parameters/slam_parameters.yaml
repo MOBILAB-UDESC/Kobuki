@@ -1,0 +1,12 @@
+slam_toolbox_node:
+  ros__parameters:
+    use_sim_time: True  # Si estás usando simulación
+    odom_frame: "odom"
+    map_frame: "map"
+    base_frame: "base1_link"
+    scan_topic: "/lidar"  # Cambia este si tu LIDAR usa otro tópico
+    mode: "mapping"  # Puede ser "mapping" o "localization"
+    # resolution: 0.05  # Resolución del mapa
+    # publish_map: True  # Para publicar el mapa en el topic /map
+    # map_update_interval: 5.0  # Frecuencia de actualización del mapa
+    # max_laser_range: 12.0  # Rango máximo del láser
