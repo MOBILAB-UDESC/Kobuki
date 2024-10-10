@@ -13,6 +13,7 @@ find_package(rclpy REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(fastcdr REQUIRED)
 
 add_executable(camera_control src/camera_control.cpp)
 # add_executable(camera_controlpy src/camera_control.py)
