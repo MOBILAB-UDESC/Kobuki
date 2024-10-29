@@ -12,46 +12,14 @@ import xacro
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default=False)
 
-    robotXacroName        = 'kobuki'
     namePackage           = 'kobuki_description'
     modelFileRelativePath = 'model/kobuki_sim.xacro'
-    worldFileRelativePath = 'worlds/playground.sdf'
     rvizFileRelativePath  = 'rviz/rviz_config.rviz'
 
     pathModelFile         = os.path.join(get_package_share_directory(namePackage), modelFileRelativePath)
     robotDescription      = xacro.process_file(pathModelFile).toxml()
-    pathWorldFile         = os.path.join(get_package_share_directory(namePackage), worldFileRelativePath)
     pathRvizConfig        = os.path.join(get_package_share_directory(namePackage), rvizFileRelativePath)
 
-                                                                    # --------------- GAZEBO CONFIGURATION --------------- 
-
-    gazebo_rosPackageLaunch = PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py'))
-    gazebo_launch           = IncludeLaunchDescription(gazebo_rosPackageLaunch, launch_arguments={'gz_args': [f'-r {pathWorldFile}'], 'on_exit_shutdown' : 'true'}.items())
-    # gazebo_launch           = IncludeLaunchDescription(gazebo_rosPackageLaunch, launch_arguments={'gz_args': ['-r empty.sdf'], 'on_exit_shutdown' : 'true'}.items())
-
-    spawnModelNodeGazebo  = Node(
-        package    = 'ros_gz_sim',
-        executable = 'create',
-        parameters=[{'use_sim_time': use_sim_time}],
-        arguments  = [
-            '-name' , robotXacroName,
-            '-topic', 'robot_description'
-        ],
-        output     = 'screen'
-    )
-
-    bridge_params = os.path.join(get_package_share_directory(namePackage), 'parameters', 'bridge_parameters.yaml')
-    
-    startGazeboRosBridgeCmd = Node(
-        package    = 'ros_gz_bridge',
-        executable = 'parameter_bridge',
-        arguments  = [
-            '--ros-args',
-            '-p',
-            f'config_file:={bridge_params}',
-        ],
-        output     = 'screen'
-    )
 
                                                                     # --------------- RVIZ CONFIGURATION --------------- 
 
@@ -81,12 +49,9 @@ def generate_launch_description():
     )
 
     launchDescriptionObject = LaunchDescription()
-
-    launchDescriptionObject.add_action(gazebo_launch)
-    launchDescriptionObject.add_action(spawnModelNodeGazebo)
+    
     launchDescriptionObject.add_action(nodeRobotStatePublisher)
     launchDescriptionObject.add_action(joint_state_publisher)
-    launchDescriptionObject.add_action(startGazeboRosBridgeCmd)
     launchDescriptionObject.add_action(spawnModelNodeRviz)
 
     return launchDescriptionObject

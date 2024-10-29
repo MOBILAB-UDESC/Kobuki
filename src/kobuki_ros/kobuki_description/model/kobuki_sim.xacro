@@ -64,7 +64,7 @@
         <origin xyz="0.17 0.0 0.09" rpy="0.0 0.0 0.0"/>
     </xacro:kobuki_camera>
 
-    <!-- <xacro:base1_gazebo/>
+    <xacro:base1_gazebo/>
     <xacro:base2_gazebo/>
     <xacro:hex_gazebo prefix="back_left"/>
     <xacro:hex_gazebo prefix="back_right"/>
@@ -77,6 +77,6 @@
     <xacro:lidar_gazebo/>
     <xacro:imu_gazebo/>
     <xacro:camera_gazebo/>
-    <xacro:control_gazebo/> -->
+    <xacro:control_gazebo/>
 
 </robot>
